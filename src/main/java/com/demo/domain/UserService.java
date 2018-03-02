@@ -1,9 +1,9 @@
 package com.demo.domain;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * @author Marc Schneider
@@ -31,5 +31,9 @@ public class UserService {
 
   public void delete(User user) {
     userRepository.delete(user);
+  }
+
+  public List<User> findAll() {
+    return userRepository.findAll();
   }
 }
