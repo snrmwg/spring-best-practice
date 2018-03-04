@@ -8,6 +8,8 @@ import org.hibernate.tool.hbm2ddl.SchemaExport;
 import org.hibernate.tool.schema.TargetType;
 import org.junit.Test;
 import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy;
+import org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy;
 import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider;
 import org.springframework.core.type.filter.AnnotationTypeFilter;
 
@@ -32,7 +34,11 @@ public class SchemaTest {
     for (BeanDefinition entity : entities) {
       metadataSources.addAnnotatedClassName(entity.getBeanClassName());
     }
-    Metadata metadata = metadataSources.buildMetadata();
+
+    Metadata metadata = metadataSources.getMetadataBuilder()
+      .applyImplicitNamingStrategy(new SpringImplicitNamingStrategy())
+      .applyPhysicalNamingStrategy(new SpringPhysicalNamingStrategy())
+      .build();
 
     new SchemaExport()
       //.setOutputFile("target/ddl.sql")
