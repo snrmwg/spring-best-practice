@@ -13,7 +13,6 @@ import org.mockito.quality.Strictness;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.security.web.FilterChainProxy;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
@@ -25,8 +24,8 @@ import java.util.List;
 import static java.util.Arrays.asList;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
+import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -45,9 +44,6 @@ public class UsersEndpointTest {
   @Autowired
   private WebApplicationContext wac;
 
-  @Autowired
-  private FilterChainProxy springSecurityFilterChain;
-
   private MockMvc mvc;
 
   @MockBean
@@ -56,7 +52,7 @@ public class UsersEndpointTest {
   @Before
   public void setup() {
     mvc = MockMvcBuilders.webAppContextSetup(this.wac)
-      .addFilter(springSecurityFilterChain)
+      .apply(springSecurity())
       .build();
   }
 
